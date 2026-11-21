@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>生物基礎まとめ｜免疫と植生</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F7FA; --sheet:#FFFFFF; --ink:#1F2A44; --sub:#56627A; --rule:#D6DCE6;
+  --marker:#FFE45C; --pink:#FFB3CF; --red:#D2283C; --redsheet:#E0404F; --navy:#2B3F7A;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131825; --sheet:#1B2232; --ink:#E7EBF3; --sub:#A3ADC2; --rule:#323C52;
+    --marker:#6B5A12; --pink:#6B2A44; --red:#FF6B7A; --redsheet:#B8303E; --navy:#9DB2F0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131825; --sheet:#1B2232; --ink:#E7EBF3; --sub:#A3ADC2; --rule:#323C52;
+  --marker:#6B5A12; --pink:#6B2A44; --red:#FF6B7A; --redsheet:#B8303E; --navy:#9DB2F0;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  font-size:16px;line-height:1.85;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;line-height:1.35;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px;border-radius:4px}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--sheet);border-bottom:1px solid var(--rule)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sheet)}
+.bar{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:8px 16px}
+.brand{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:1.05rem;margin-right:auto;white-space:nowrap}
+nav.tabs{max-width:880px;margin:0 auto;display:flex;gap:4px;padding:0 12px;overflow-x:auto}
+nav.tabs a{flex:1 0 auto;text-align:center;padding:10px 14px;text-decoration:none;color:var(--sub);font-weight:700;border-bottom:3px solid transparent}
+nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--red)}
+.iconbtn{border:1px solid var(--rule);background:transparent;border-radius:999px;padding:4px 12px;font-size:.85rem;cursor:pointer}
+
+main{max-width:880px;margin:0 auto;padding:24px 16px 80px}
+.view{display:none}.view.on{display:block}
+
+/* hero */
+.hero{padding:12px 0 24px}
+.hero h1{font-size:clamp(1.9rem,6vw,2.8rem);font-weight:900;letter-spacing:.02em}
+.hero h1 .yr{display:block;font-size:.5em;color:var(--sub);font-weight:700;letter-spacing:.1em}
+.hero p{color:var(--sub);max-width:36em;margin:.8em 0 0}
+
+/* red sheet */
+mark{background:linear-gradient(transparent 45%,var(--marker) 45%);color:inherit;padding:0 .1em;border-radius:2px}
+mark.p{background:linear-gradient(transparent 45%,var(--pink) 45%)}
+body.sheet mark{background:var(--redsheet);color:transparent;cursor:pointer;user-select:none}
+body.sheet mark.open{background:linear-gradient(transparent 45%,var(--marker) 45%);color:var(--red);font-weight:700}
+.sheetbtn[aria-pressed="true"]{background:var(--redsheet);color:#fff;border-color:var(--redsheet)}
+
+/* chapters */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0;list-style:none}
+.toc a{display:block;padding:6px 12px;border:1px solid var(--rule);border-radius:6px;text-decoration:none;color:var(--ink);font-size:.9rem;background:var(--sheet)}
+section.ch{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:24px 20px;margin-bottom:28px}
+section.ch > h2{font-size:1.5rem;font-weight:900}
+.pg{color:var(--sub);font-size:.85rem;margin:.2em 0 1em}
+.q{border-left:4px solid var(--red);padding:2px 0 2px 12px;margin:0 0 1.2em;font-weight:700}
+section.ch h3{font-size:1.1rem;margin:1.6em 0 .5em;padding-bottom:4px;border-bottom:1px dashed var(--rule)}
+section.ch ul{padding-left:1.2em;margin:.4em 0}
+section.ch li{margin:.25em 0}
+.box{border:1px solid var(--rule);border-radius:8px;padding:12px 14px;margin:1em 0;background:var(--paper)}
+.box b{color:var(--navy)}
+.sum{border:2px solid var(--ink);border-radius:8px;padding:14px 16px;margin-top:1.4em}
+.sum strong{font-family:"Zen Old Mincho",serif}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+.tw{overflow-x:auto}
+td,th{border:1px solid var(--rule);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--paper);white-space:nowrap}
+
+/* timeline */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px}
+.chip{border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:4px 12px;font-size:.88rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+ol.tl{list-style:none;margin:0;padding:0;position:relative}
+ol.tl::before{content:"";position:absolute;left:62px;top:6px;bottom:6px;width:2px;background:var(--rule)}
+.tl li{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:8px 0;position:relative}
+.tl .y{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:1.1rem;text-align:right}
+.tl li::after{content:"";position:absolute;left:57px;top:17px;width:12px;height:12px;border-radius:50%;background:var(--sheet);border:3px solid var(--c,var(--ink))}
+.tl .ev{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:8px 12px}
+.tl .tag{display:inline-block;font-size:.75rem;padding:0 8px;border-radius:999px;color:#fff;background:var(--c);margin-right:6px;vertical-align:2px}
+.tl .ev small{display:block;color:var(--sub);font-size:.85rem;line-height:1.6;margin-top:2px}
+.tl li.big .ev{border:2px solid var(--red)}
+
+/* cloze */
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+select{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:6px 8px}
+.btn{border:1px solid var(--ink);background:var(--sheet);border-radius:6px;padding:6px 14px;cursor:pointer;font-weight:700}
+.btn.main{background:var(--ink);color:var(--paper)}
+ol.cloze{padding-left:1.6em;margin:0}
+ol.cloze li{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:10px 14px;margin:0 0 10px}
+.blank{display:inline-block;min-width:5em;border:none;border-bottom:2px solid var(--red);background:transparent;color:transparent;cursor:pointer;padding:0 .3em;margin:0 .15em;line-height:1.4;text-align:center}
+.blank.open{color:var(--red);font-weight:700}
+.chlabel{display:block;font-size:.78rem;color:var(--sub)}
+
+/* qa */
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:24px 20px;min-height:220px;display:flex;flex-direction:column}
+.card .meta{display:flex;justify-content:space-between;color:var(--sub);font-size:.85rem}
+.card .qq{font-size:1.2rem;font-weight:700;margin:18px 0;flex:1}
+.card .ans{font-family:"Zen Old Mincho",serif;font-size:1.5rem;font-weight:900;color:var(--red);min-height:1.6em;margin-bottom:16px}
+.card .ans small{display:block;font-family:"Zen Kaku Gothic New",sans-serif;font-size:.9rem;font-weight:400;color:var(--sub)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row .btn{flex:1;min-height:44px}
+.progress{height:6px;background:var(--rule);border-radius:3px;margin:16px 0 6px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--red);width:0;transition:width .3s}
+.stat{color:var(--sub);font-size:.88rem}
+.empty{text-align:center;padding:40px 0;color:var(--sub)}
+
+footer{text-align:center;color:var(--sub);font-size:.8rem;padding:24px 16px 40px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){
+  section.ch{padding:18px 14px}
+  ol.tl::before{left:46px}
+  .tl li{grid-template-columns:42px 1fr;gap:16px}
+  .tl li::after{left:41px}
+  .tl .y{font-size:.95rem}
+}
+.graph{display:block;width:100%;max-width:460px;height:auto;margin:8px auto;color:var(--ink)}
+.graph .ax{stroke:currentColor;stroke-width:1.5;fill:none}
+.graph .ln{stroke:var(--red);stroke-width:3;fill:none}
+.graph .dash{stroke:var(--sub);stroke-width:1.2;stroke-dasharray:4 4;fill:none}
+.graph text{fill:currentColor;font-size:13px}
+.graph .nm{fill:var(--navy);font-weight:700}
+.tl .y{font-size:1rem}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <span class="brand">生物基礎まとめ</span>
+    <button class="iconbtn sheetbtn" id="sheetBtn" aria-pressed="false" title="重要語句を赤シートで隠す">赤シート</button>
+  </div>
+  <nav class="tabs" aria-label="ページ切り替え">
+    <a href="#summary">まとめ</a>
+    <a href="#timeline">流れ</a>
+    <a href="#cloze">穴埋め</a>
+    <a href="#qa">一問一答</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ===== まとめ ===== -->
+  <div class="view" id="v-summary">
+    <div class="hero">
+      <h1><span class="yr">IMMUNITY · VEGETATION</span>免疫と植生</h1>
+      <p>生物基礎のプリント（3-7 免疫①、3-8 免疫②、4-1 植生と環境の関わり）を整理した自習用まとめです。上の「赤シート」を押すと、マーカー部分が隠れます。隠れた語句はタップで1つずつ確認できます。</p>
+    </div>
+    <ul class="toc">
+      <li><a href="#ch-defense">生体防御と自然免疫</a></li>
+      <li><a href="#ch-acquired">獲得免疫</a></li>
+      <li><a href="#ch-feature">免疫の特徴と免疫記憶</a></li>
+      <li><a href="#ch-vegetation">植生と森林の構造</a></li>
+      <li><a href="#ch-light">光の強さと光合成</a></li>
+    </ul>
+
+    <!-- 生体防御 -->
+    <section class="ch" id="ch-defense">
+      <h2>生体防御と自然免疫</h2>
+      <p class="pg">3-7 免疫①　教科書 p.120〜128</p>
+      <p class="q">からだは、病原体からどのように身を守っているのだろう？</p>
+
+      <p><mark>生体防御</mark>＝<mark>病原体</mark>などの異物から身を守ろうとする働き。病原体は病気（感染症）の原因となる<mark>ウイルス</mark>や<mark>細菌</mark>など。</p>
+
+      <h3>1）物理的・化学的な防御：病原体の<mark>侵入を防ぐ</mark></h3>
+      <div class="tw"><table>
+        <tr><th>しくみ</th><th>内容</th></tr>
+        <tr><td>侵入・付着を防ぐ</td><td>皮膚の<mark>角質層</mark>（<mark>死んだ</mark>細胞の層）<br>気管・消化管内の<mark>粘膜</mark>（<mark>粘液</mark>の分泌や繊毛運動）</td></tr>
+        <tr><td>繁殖を防ぐ</td><td>汗・皮脂・胃酸からの分泌物 → 体表を<mark>酸性</mark>に保つ<br>タンパク質の<mark>ディフェンシン</mark>（皮膚や粘膜上皮）→ 細菌の<mark>細胞膜</mark>を破壊<br>殺菌酵素の<mark>リゾチーム</mark>（汗・涙・だ液）→ 細菌の<mark>細胞壁</mark>を分解</td></tr>
+      </table></div>
+
+      <h3>2）免疫：侵入した病原体を<mark>排除する</mark></h3>
+      <ul>
+        <li>A. 生まれつき備わっている … <mark>自然免疫</mark></li>
+        <li>B. 病原体の侵入後に得られる … <mark>獲得免疫</mark></li>
+        <li>免疫に働く細胞＝<mark>白血球</mark>（免疫担当細胞）</li>
+      </ul>
+      <div class="tw"><table>
+        <tr><th>役割</th><th>組織・器官</th></tr>
+        <tr><td>白血球をつくる</td><td><mark>骨髄</mark></td></tr>
+        <tr><td>白血球が成熟する</td><td><mark>骨髄</mark>、<mark>胸腺</mark></td></tr>
+        <tr><td>獲得免疫のおもな場</td><td>扁桃、<mark>リンパ節</mark>、<mark>ひ臓</mark>、<mark>腸管</mark>（パイエル板）</td></tr>
+      </table></div>
+
+      <h3>自然免疫：すべての病原体に同じ攻撃をする</h3>
+      <ul>
+        <li><b>食作用</b>：白血球が異物を<mark>取り入れて</mark>、酵素で<mark>分解</mark>する働き。担当するのは<mark>食細胞</mark>＝<mark>マクロファージ</mark>・<mark>好中球</mark>・<mark>樹状細胞</mark></li>
+        <li><b>異常な細胞の破壊</b>：<mark>がん</mark>細胞や<mark>感染</mark>細胞を壊す。担当は<mark>NK細胞</mark>（ナチュラルキラー細胞）で、<mark>リンパ球</mark>のグループに入る</li>
+      </ul>
+      <div class="box"><b>炎症</b>（自然免疫が活発な証拠）<br>感染した部分で<mark>毛細血管</mark>が拡張して血液量が増え、白血球が集まってくる → 赤く腫れたり、熱をもったりする。この現象を<mark>炎症</mark>という。</div>
+    </section>
+
+    <!-- 獲得免疫 -->
+    <section class="ch" id="ch-acquired">
+      <h2>獲得免疫</h2>
+      <p class="pg">3-8 免疫②　教科書 p.130〜138</p>
+      <p class="q">獲得免疫は、どのように特定の病原体だけを攻撃するのだろう？</p>
+
+      <p><mark>獲得免疫</mark>＝特定の病原体を認識した<mark>リンパ球</mark>が、特異的に攻撃する。獲得免疫でリンパ球に認識される異物を<mark>抗原</mark>という。</p>
+      <ul>
+        <li>おもな白血球（リンパ球）：<mark>ヘルパーT細胞</mark>・<mark>キラーT細胞</mark>・<mark>B細胞</mark></li>
+        <li>成熟する場所：T細胞は<mark>胸腺</mark>（Thymus）、B細胞は<mark>骨髄</mark>（Bone marrow）</li>
+        <li>自分の細胞に反応するT細胞やB細胞は成熟の途中で排除される → ふつう自分の細胞には免疫反応が起きない（<mark>免疫寛容</mark>）</li>
+      </ul>
+
+      <h3>0）獲得免疫の始まり：抗原提示</h3>
+      <p>自然免疫の<mark>食作用</mark>で病原体を取りこんだ<mark>樹状細胞</mark>は、近くの<mark>リンパ節</mark>へ移動し、分解した断片を細胞表面に出して<mark>T細胞</mark>に病原体の情報を示す。これを<mark>抗原提示</mark>という。</p>
+
+      <h3>1）細胞性免疫（おもにT細胞が働く）</h3>
+      <ul>
+        <li>抗原提示を受けるT細胞：<mark>ヘルパーT細胞</mark>、<mark>キラーT細胞</mark> → 活性化・増殖して感染部位へ移動</li>
+        <li>① ヘルパーT細胞が<mark>マクロファージ</mark>などを活性化し、<mark>食作用</mark>を強める。<mark>NK細胞</mark>や<mark>キラーT細胞</mark>の働きも強める</li>
+        <li>② <mark>キラーT細胞</mark>が、感染した細胞を<mark>直接攻撃</mark>して破壊する</li>
+        <li>抗原の例：異常な細胞（感染した細胞・がん細胞・<mark>移植</mark>された細胞）</li>
+      </ul>
+      <div class="box"><b><mark>拒絶反応</mark></b>：他人から移植された臓器を攻撃して排除する現象（細胞性免疫による）</div>
+
+      <h3>2）体液性免疫（おもにB細胞が働く）</h3>
+      <ul>
+        <li>抗原提示を受けるT細胞：<mark>ヘルパーT細胞</mark></li>
+        <li>① ヘルパーT細胞によって、<mark>B細胞</mark>（自分も抗原を認識している）が活性化</li>
+        <li>② B細胞は増殖し、<mark>抗体産生細胞</mark>（<mark>形質細胞</mark>）に<mark>分化</mark>する</li>
+        <li>③ 抗体産生細胞が<mark>体液中に抗体</mark>を放出する</li>
+        <li>抗原の例：<mark>病原体</mark>や<mark>毒素</mark></li>
+      </ul>
+      <div class="box"><b>抗体とは</b><br>Y字型の<mark>タンパク質</mark>（名称：<mark>免疫グロブリン</mark>）。認識した抗原専用につくられ、その抗原とだけ結合する＝<mark>抗原抗体反応</mark>。<br>抗原は不活性化され、マクロファージなどの<mark>食作用</mark>で効率よく排除される。</div>
+    </section>
+
+    <!-- 特徴 -->
+    <section class="ch" id="ch-feature">
+      <h2>免疫の特徴と免疫記憶</h2>
+      <p class="pg">3-8 免疫②</p>
+      <div class="tw"><table>
+        <tr><th>免疫</th><th>しくみ</th><th>特徴</th></tr>
+        <tr><td><mark>自然免疫</mark></td><td>生まれつき備わっている</td><td><mark>非特異的</mark>（幅広く病原体を認識）で、<mark>すばやく</mark>効果を示す</td></tr>
+        <tr><td><mark>獲得免疫</mark>：<mark>細胞性免疫</mark></td><td>おもに<mark>T細胞</mark>が細胞を直接攻撃</td><td rowspan="2"><mark>特異的</mark>で、効果が出るまでに時間がかかる</td></tr>
+        <tr><td><mark>獲得免疫</mark>：<mark>体液性免疫</mark></td><td>おもに<mark>B細胞</mark>が抗体をつくって攻撃</td></tr>
+      </table></div>
+      <ul>
+        <li>自然免疫と獲得免疫は一体となって働く</li>
+        <li>活性化したT細胞やB細胞の一部は、<mark>記憶細胞</mark>として長く体内に残る</li>
+        <li>→ <mark>免疫記憶</mark>：<mark>同じ</mark>抗原が再び侵入したときの働きが<mark>強化</mark>される</li>
+      </ul>
+      <div class="tw"><table>
+        <tr><th>反応</th><th>内容</th></tr>
+        <tr><td><mark>一次応答</mark></td><td>1回目の抗原侵入に対する免疫反応。抗体の量は少なく、ゆっくり</td></tr>
+        <tr><td><mark>二次応答</mark></td><td>同じ抗原の再侵入に対する反応。記憶細胞が働くので<mark>短時間</mark>かつ<mark>多量</mark>に抗体ができる</td></tr>
+      </table></div>
+      <p>→ 一度かかった感染症は、<mark>かかりにくい・軽症で済む</mark>ことが多い。</p>
+    </section>
+
+    <!-- 植生 -->
+    <section class="ch" id="ch-vegetation">
+      <h2>植生と森林の構造</h2>
+      <p class="pg">4-1 植生と環境の関わり　教科書 p.150〜154</p>
+      <p><mark>植生</mark>＝ある地域に生育する<mark>植物の集団</mark>。その地域の<mark>気温</mark>や<mark>降水量</mark>などの気候に影響される。</p>
+      <ul>
+        <li><mark>相観</mark>：植生全体をながめたときの外観</li>
+        <li><mark>優占種</mark>：相観を決定づける種。植生の中で最も高い割合を占める</li>
+        <li><mark>生活形</mark>：環境に適応した生活様式を反映した生物の形態（例：常緑広葉樹、落葉広葉樹、針葉樹、多肉植物）</li>
+      </ul>
+      <div class="tw"><table>
+        <tr><th>降水量</th><th>植生</th><th>相観</th></tr>
+        <tr><td>多い</td><td>おもに<mark>木本</mark>からなる</td><td><mark>森林</mark></td></tr>
+        <tr><td>少ない</td><td>おもに<mark>草本</mark>からなる</td><td><mark>草原</mark></td></tr>
+        <tr><td>極端に少ない</td><td>特定の植物がまばらに生育</td><td><mark>荒原</mark></td></tr>
+      </table></div>
+
+      <h3>森林の構造</h3>
+      <ul>
+        <li>森林の表面をおおう最上部＝<mark>林冠</mark>、地表に近い部分＝<mark>林床</mark></li>
+        <li>上から <mark>高木</mark>層・<mark>亜高木</mark>層・<mark>低木</mark>層・<mark>草本</mark>層・<mark>地表</mark>層 と、さまざまな植物が層状に分布＝<mark>階層構造</mark></li>
+        <li>森林に入る光の大部分は<mark>高木層</mark>で吸収される → 下の層ほど急に暗くなる</li>
+        <li>林床付近で育つのは、一般に<mark>弱光</mark>でも成長できる植物だけ</li>
+      </ul>
+
+      <h3>光環境による植物の分類</h3>
+      <div class="tw"><table>
+        <tr><th>分類</th><th>樹木の場合</th><th>生育場所</th></tr>
+        <tr><td><mark>陽生植物</mark></td><td><mark>陽樹</mark></td><td>日当たりのよい場所（森林では<mark>林冠</mark>）</td></tr>
+        <tr><td><mark>陰生植物</mark></td><td><mark>陰樹</mark></td><td>弱い光の場所（森林では<mark>林床</mark>）</td></tr>
+      </table></div>
+      <ul>
+        <li>陰樹は、芽生えや幼木のときに陰生植物の特徴を示す</li>
+        <li>1つの植物でも、日当たりのよい所の葉＝<mark>陽葉</mark>、悪い所の葉＝<mark>陰葉</mark>。陰葉の方が厚みが<mark>薄く</mark>、葉の面積が<mark>広い</mark>ことが多い</li>
+      </ul>
+    </section>
+
+    <!-- 光合成 -->
+    <section class="ch" id="ch-light">
+      <h2>光の強さと光合成</h2>
+      <p class="pg">4-1 植生と環境の関わり</p>
+      <ul>
+        <li><mark>光合成速度</mark>：一定時間あたりの光合成量。二酸化炭素の<mark>吸収</mark>量で示され、光の強さとともに変化<mark>する</mark></li>
+        <li><mark>呼吸速度</mark>：一定時間あたりの呼吸量。二酸化炭素の<mark>放出</mark>量で示され、光の強さとともに変化<mark>しない</mark>（と仮定）</li>
+        <li>光を強くし続けても、ある強さからCO₂吸収速度は変わらなくなる。このときの光の強さ＝<mark>光飽和点</mark></li>
+        <li>実際に測れるCO₂吸収量＝<mark>見かけの光合成速度</mark>。光の強さが0のときは、CO₂の<mark>放出</mark>だけになる</li>
+      </ul>
+      <svg class="graph" viewBox="0 0 460 300" role="img" aria-label="光の強さとCO2吸収速度のグラフ。光補償点と光飽和点、呼吸速度、見かけの光合成速度、光合成速度を示す">
+        <line class="ax" x1="50" y1="20" x2="50" y2="285"/>
+        <line class="ax" x1="50" y1="170" x2="440" y2="170"/>
+        <text x="8" y="60">吸収</text><text x="8" y="260">放出</text>
+        <text x="380" y="192">光の強さ</text><text x="36" y="175">0</text>
+        <polyline class="ln" points="50,240 230,60 420,60"/>
+        <line class="dash" x1="50" y1="240" x2="420" y2="240"/>
+        <line class="dash" x1="230" y1="60" x2="230" y2="170"/>
+        <line class="dash" x1="300" y1="60" x2="300" y2="240"/>
+        <line class="dash" x1="380" y1="60" x2="380" y2="240"/>
+        <text class="nm" x="100" y="190">②光補償点</text>
+        <text class="nm" x="190" y="50">③光飽和点</text>
+        <text class="nm" x="306" y="215">①呼吸速度</text>
+        <text class="nm" x="306" y="120">④見かけの</text><text class="nm" x="306" y="136">光合成速度</text>
+        <text class="nm" x="386" y="150">⑤光合成</text><text class="nm" x="386" y="166">速度</text>
+      </svg>
+      <div class="tw"><table>
+        <tr><th>グラフの番号</th><th>名前</th><th>意味</th></tr>
+        <tr><td>①</td><td><mark>呼吸速度</mark></td><td>光の強さ0のときのCO₂放出量。光の強さによらず一定</td></tr>
+        <tr><td>②</td><td><mark>光補償点</mark></td><td>CO₂の<mark>吸収</mark>量＝<mark>放出</mark>量となり、見かけ上CO₂の出入りがないときの光の強さ</td></tr>
+        <tr><td>③</td><td><mark>光飽和点</mark></td><td>これ以上光を強くしても光合成速度が増えなくなる光の強さ</td></tr>
+        <tr><td>④</td><td><mark>見かけの光合成速度</mark></td><td>実際に測定されるCO₂吸収速度</td></tr>
+        <tr><td>⑤</td><td><mark>光合成速度</mark></td><td>＝<mark>見かけの光合成速度</mark>＋<mark>呼吸速度</mark></td></tr>
+      </table></div>
+      <p>※ グラフの①〜⑤はプリントでは空欄だったため、教科書の一般的な用語で埋めています。</p>
+    </section>
+  </div>
+
+  <!-- ===== 流れ ===== -->
+  <div class="view" id="v-timeline">
+    <div class="hero"><h1><span class="yr">FLOW</span>流れで覚える</h1>
+      <p>免疫の反応の順番を、ステップごとに並べました。ボタンで絞り込めます。赤枠は特に重要なステップです。</p></div>
+    <div class="filters" id="tlFilters"></div>
+    <ol class="tl" id="tl"></ol>
+  </div>
+
+  <!-- ===== 穴埋め ===== -->
+  <div class="view" id="v-cloze">
+    <div class="hero"><h1><span class="yr">FILL IN THE BLANKS</span>穴埋め問題</h1>
+      <p>赤い下線をタップすると答えが出ます。もう一度タップで隠れます。</p></div>
+    <div class="tools">
+      <select id="clozeCh" aria-label="単元を選ぶ"></select>
+      <button class="btn" id="clozeShow">全部見る</button>
+      <button class="btn" id="clozeHide">全部隠す</button>
+      <button class="btn" id="clozeShuffle">シャッフル</button>
+    </div>
+    <ol class="cloze" id="clozeList"></ol>
+  </div>
+
+  <!-- ===== 一問一答 ===== -->
+  <div class="view" id="v-qa">
+    <div class="hero"><h1><span class="yr">Q &amp; A</span>一問一答</h1>
+      <p>答えを確認したら「覚えた」か「もう一回」を選びます。「覚えた」の記録はこのブラウザに保存されます。</p></div>
+    <div class="tools">
+      <select id="qaCh" aria-label="単元を選ぶ"></select>
+      <select id="qaMode" aria-label="出題範囲">
+        <option value="todo">まだ覚えていない問題だけ</option>
+        <option value="all">すべての問題</option>
+      </select>
+      <button class="btn" id="qaReset">記録をリセット</button>
+    </div>
+    <div id="qaBox"></div>
+    <div class="progress"><span id="qaBar"></span></div>
+    <div class="stat" id="qaStat"></div>
+  </div>
+</main>
+<footer>生物基礎 授業プリント（免疫・植生）をもとに作成した自習用まとめ</footer>
+
+<script>
+const CH = {
+  defense:"生体防御と自然免疫",
+  acquired:"獲得免疫",
+  plant:"植生と光合成"
+};
+
+/* ---------- 流れデータ（年の欄にステップ番号） ---------- */
+const REG = {
+  "物理・化学的防御":"#2B6CB0","自然免疫":"#2F855A","細胞性免疫":"#C05621","体液性免疫":"#805AD5","免疫記憶":"#D2283C"
+};
+const TL = [
+  ["1","物理・化学的防御","皮膚・粘膜で侵入を防ぐ","角質層、粘液・繊毛運動、酸性の分泌物、ディフェンシン、リゾチーム"],
+  ["2","自然免疫","食細胞が食作用で取りこむ","マクロファージ・好中球・樹状細胞。炎症が起こる",1],
+  ["2","自然免疫","NK細胞が異常な細胞を壊す","がん細胞・感染細胞"],
+  ["3","自然免疫","樹状細胞がリンパ節へ移動","取りこんだ病原体の断片を表面に出す"],
+  ["4","細胞性免疫","抗原提示","樹状細胞がヘルパーT細胞・キラーT細胞に抗原を示す",1],
+  ["5","細胞性免疫","T細胞が活性化・増殖","感染部位へ移動する"],
+  ["6","細胞性免疫","ヘルパーT細胞がマクロファージを活性化","食作用を強め、NK細胞・キラーT細胞の働きも強める"],
+  ["7","細胞性免疫","キラーT細胞が感染細胞を直接攻撃","移植した臓器への拒絶反応もこのしくみ",1],
+  ["4","体液性免疫","抗原提示","樹状細胞がヘルパーT細胞に抗原を示す",1],
+  ["5","体液性免疫","ヘルパーT細胞がB細胞を活性化","B細胞も同じ抗原を認識している"],
+  ["6","体液性免疫","B細胞が増殖し抗体産生細胞に分化","抗体産生細胞＝形質細胞"],
+  ["7","体液性免疫","体液中に抗体を放出","抗体（免疫グロブリン）が抗原と結合＝抗原抗体反応",1],
+  ["8","体液性免疫","食作用で排除","抗体と結合した抗原をマクロファージなどが取りこむ"],
+  ["9","免疫記憶","記憶細胞が残る","活性化したT細胞・B細胞の一部"],
+  ["10","免疫記憶","二次応答","同じ抗原の再侵入に短時間・多量の反応",1]
+];
+
+/* ---------- 穴埋めデータ ---------- */
+const CLOZE = [
+  ["defense","病原体などの異物から身を守る働きを[生体防御]という。病原体には[ウイルス]や[細菌]などがある。"],
+  ["defense","皮膚の表面は死んだ細胞の層である[角質層]におおわれている。"],
+  ["defense","気管や消化管の内側は[粘膜]でおおわれ、[粘液]の分泌や繊毛運動で異物を除く。"],
+  ["defense","汗・皮脂・胃酸からの分泌物は、体表などを[酸性]に保ち病原体の繁殖を防ぐ。"],
+  ["defense","タンパク質の[ディフェンシン]は細菌の[細胞膜]を破壊する。"],
+  ["defense","汗・涙・だ液に含まれる殺菌酵素の[リゾチーム]は細菌の[細胞壁]を分解する。"],
+  ["defense","生まれつき備わっている免疫を[自然免疫]、病原体の侵入後に得られる免疫を[獲得免疫]という。"],
+  ["defense","白血球は[骨髄]でつくられ、骨髄や[胸腺]で成熟する。"],
+  ["defense","獲得免疫のおもな場は、扁桃・[リンパ節]・[ひ臓]・腸管（パイエル板）である。"],
+  ["defense","白血球が異物を取りこみ、酵素で分解する働きを[食作用]という。"],
+  ["defense","食作用を行う白血球を[食細胞]といい、[マクロファージ]・[好中球]・[樹状細胞]がある。"],
+  ["defense","がん細胞や感染細胞を破壊するのは[NK細胞]で、[リンパ球]のグループに入る。"],
+  ["defense","感染部位で[毛細血管]が拡張し、赤く腫れたり熱をもったりすることを[炎症]という。"],
+  ["acquired","獲得免疫でリンパ球に認識される異物を[抗原]という。"],
+  ["acquired","T細胞は[胸腺]で、B細胞は[骨髄]で成熟する。"],
+  ["acquired","自己の細胞に対して免疫反応が起こらない状態を[免疫寛容]という。"],
+  ["acquired","樹状細胞は[リンパ節]へ移動し、T細胞に病原体の情報を示す。これを[抗原提示]という。"],
+  ["acquired","細胞性免疫では、[キラーT細胞]が感染した細胞を[直接攻撃]して破壊する。"],
+  ["acquired","ヘルパーT細胞は[マクロファージ]を活性化し、[食作用]を強める。"],
+  ["acquired","他人から移植された臓器を攻撃して排除する現象を[拒絶反応]という。"],
+  ["acquired","体液性免疫では、[ヘルパーT細胞]によって[B細胞]が活性化される。"],
+  ["acquired","B細胞は増殖して[抗体産生細胞]（形質細胞）に分化し、体液中に[抗体]を放出する。"],
+  ["acquired","抗体はY字型の[タンパク質]で、[免疫グロブリン]と呼ばれる。"],
+  ["acquired","抗体が特定の抗原とだけ結合することを[抗原抗体反応]という。"],
+  ["acquired","自然免疫は[非特異的]な反応で、[すばやく]効果を示す。"],
+  ["acquired","獲得免疫は[特異的]な反応で、一部のT細胞やB細胞は[記憶細胞]として残る。"],
+  ["acquired","同じ抗原の再侵入に対する働きが強化されることを[免疫記憶]という。"],
+  ["acquired","1回目の抗原侵入に対する反応を[一次応答]、2回目以降の反応を[二次応答]という。"],
+  ["acquired","二次応答では、[短時間]かつ[多量]に抗体がつくられる。"],
+  ["plant","ある地域に生育する植物の集団を[植生]といい、その全体の外観を[相観]という。"],
+  ["plant","相観を決定づける、植生の中で最も割合の高い種を[優占種]という。"],
+  ["plant","環境に適応した生活様式を反映した生物の形態を[生活形]という。"],
+  ["plant","降水量が多い地域では[森林]、少ない地域では[草原]、極端に少ない地域では[荒原]になる。"],
+  ["plant","森林の最上部を[林冠]、地表に近い部分を[林床]という。"],
+  ["plant","森林では高木層から地表層までの[階層構造]が見られる。"],
+  ["plant","森林に入る光の大部分は[高木層]で吸収される。"],
+  ["plant","日当たりのよい場所で育つ植物を[陽生植物]、弱い光の場所で育つ植物を[陰生植物]という。"],
+  ["plant","日当たりのよい所の葉を[陽葉]、悪い所の葉を[陰葉]といい、陰葉は薄くて面積が広い。"],
+  ["plant","光を強くしても光合成速度が増えなくなる光の強さを[光飽和点]という。"],
+  ["plant","CO₂の吸収量と放出量が等しくなる光の強さを[光補償点]という。"],
+  ["plant","光合成速度＝[見かけの光合成速度]＋[呼吸速度]。"]
+];
+
+/* ---------- 一問一答データ ---------- */
+const QA = [
+  ["defense","病気（感染症）の原因となるウイルスや細菌などをまとめて何という？","病原体"],
+  ["defense","皮膚の表面にある、死んだ細胞の層は？","角質層"],
+  ["defense","皮膚や粘膜上皮にあり、細菌の細胞膜を破壊するタンパク質は？","ディフェンシン"],
+  ["defense","汗・涙・だ液に含まれ、細菌の細胞壁を分解する酵素は？","リゾチーム"],
+  ["defense","汗や胃酸などの分泌物は、体表などを何性に保つ？","酸性"],
+  ["defense","生まれつき備わっている免疫は？","自然免疫"],
+  ["defense","病原体の侵入後に得られる免疫は？","獲得免疫"],
+  ["defense","免疫に働く細胞（免疫担当細胞）は？","白血球"],
+  ["defense","白血球がつくられる場所は？","骨髄"],
+  ["defense","異物を取りこんで分解する働きは？","食作用"],
+  ["defense","食作用を行う白血球を3つ挙げると？","マクロファージ・好中球・樹状細胞","まとめて食細胞"],
+  ["defense","がん細胞や感染細胞を破壊する、リンパ球の仲間は？","NK細胞（ナチュラルキラー細胞）"],
+  ["defense","感染部位が赤く腫れたり熱をもったりする反応は？","炎症","毛細血管が拡張し白血球が集まる"],
+  ["acquired","獲得免疫でリンパ球に認識される異物は？","抗原"],
+  ["acquired","獲得免疫で働く白血球のグループは？","リンパ球"],
+  ["acquired","T細胞が成熟する器官は？","胸腺","Thymus"],
+  ["acquired","B細胞が成熟する場所は？","骨髄","Bone marrow"],
+  ["acquired","自分の細胞に免疫反応が起きない状態は？","免疫寛容"],
+  ["acquired","病原体の断片を細胞表面に出してT細胞に示すことは？","抗原提示"],
+  ["acquired","抗原提示を行うおもな細胞は？","樹状細胞"],
+  ["acquired","樹状細胞が抗原提示のために移動する場所は？","リンパ節"],
+  ["acquired","T細胞が感染細胞を直接攻撃する獲得免疫は？","細胞性免疫"],
+  ["acquired","感染した細胞を直接攻撃して破壊するT細胞は？","キラーT細胞"],
+  ["acquired","マクロファージやB細胞を活性化するT細胞は？","ヘルパーT細胞"],
+  ["acquired","移植された臓器を攻撃して排除する現象は？","拒絶反応"],
+  ["acquired","抗体をつくって攻撃する獲得免疫は？","体液性免疫"],
+  ["acquired","B細胞が分化してできる、抗体をつくる細胞は？","抗体産生細胞（形質細胞）"],
+  ["acquired","抗体の正体は何という物質？","免疫グロブリン（タンパク質）"],
+  ["acquired","抗体が特定の抗原とだけ結合する反応は？","抗原抗体反応"],
+  ["acquired","体液性免疫で抗原になるものの例は？","病原体や毒素"],
+  ["acquired","自然免疫の特徴は？","非特異的で、すばやく効果を示す"],
+  ["acquired","獲得免疫の特徴は？","特異的で、効果が出るまでに時間がかかる"],
+  ["acquired","獲得免疫のあと、長く体内に残るT細胞やB細胞は？","記憶細胞"],
+  ["acquired","同じ抗原の再侵入への働きが強化されるしくみは？","免疫記憶"],
+  ["acquired","2回目以降の抗原侵入に対する、短時間・多量の反応は？","二次応答"],
+  ["plant","ある地域に生育する植物の集団は？","植生"],
+  ["plant","植生全体をながめたときの外観は？","相観"],
+  ["plant","相観を決定づける、最も割合の高い種は？","優占種"],
+  ["plant","常緑広葉樹・針葉樹・多肉植物のような、環境に適応した形態は？","生活形"],
+  ["plant","降水量が極端に少ない地域の相観は？","荒原"],
+  ["plant","森林の表面をおおう最上部は？","林冠"],
+  ["plant","森林の地表に近い部分は？","林床"],
+  ["plant","森林で植物が層状に分布するようすは？","階層構造"],
+  ["plant","森林に入る光の大部分を吸収する層は？","高木層"],
+  ["plant","日当たりのよい場所で生育する樹木は？","陽樹"],
+  ["plant","陰葉は陽葉と比べて、厚さと面積はどうなっている？","薄くて、面積が広い"],
+  ["plant","光合成速度は、二酸化炭素の何の量で示される？","吸収量"],
+  ["plant","光を強くしてもCO₂吸収速度が増えなくなる光の強さは？","光飽和点"],
+  ["plant","見かけ上CO₂の出入りがなくなる光の強さは？","光補償点"],
+  ["plant","実際に測定されるCO₂吸収速度は？","見かけの光合成速度"],
+  ["plant","光合成速度を式で表すと？","見かけの光合成速度＋呼吸速度"],
+  ["plant","光の強さが0のとき、CO₂はどうなっている？","放出のみ（呼吸だけ）"]
+];
+
+/* ---------- ユーティリティ ---------- */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc = s => s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function chOptions(sel){
+  sel.innerHTML = `<option value="all">すべての単元</option>` +
+    Object.entries(CH).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+}
+
+/* ---------- ルーティング ---------- */
+const VIEWS = ["summary","timeline","cloze","qa"];
+function route(){
+  const h = location.hash.slice(1);
+  let v = VIEWS.includes(h) ? h : (h.startsWith("ch-") ? "summary" : "summary");
+  document.querySelectorAll(".view").forEach(el=>el.classList.toggle("on", el.id==="v-"+v));
+  document.querySelectorAll("nav.tabs a").forEach(a=>{
+    if(a.getAttribute("href")==="#"+v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  });
+  if(h.startsWith("ch-")){const t=document.getElementById(h); if(t) t.scrollIntoView();}
+  else window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- 赤シート ---------- */
+const sheetBtn = $("#sheetBtn");
+function setSheet(on){
+  document.body.classList.toggle("sheet",on);
+  sheetBtn.setAttribute("aria-pressed",on);
+  document.querySelectorAll("mark.open").forEach(m=>m.classList.remove("open"));
+  store.set("seibutsu-sheet",on);
+}
+sheetBtn.addEventListener("click",()=>setSheet(!document.body.classList.contains("sheet")));
+document.addEventListener("click",e=>{
+  const m = e.target.closest("mark");
+  if(m && document.body.classList.contains("sheet")) m.classList.toggle("open");
+});
+
+/* ---------- 年表 ---------- */
+let tlReg = "all";
+function renderTL(){
+  const f = $("#tlFilters");
+  f.innerHTML = [["all","すべて"],...Object.keys(REG).map(r=>[r,r])]
+    .map(([k,l])=>`<button class="chip" data-r="${k}" aria-pressed="${k===tlReg}">${l}</button>`).join("");
+  $("#tl").innerHTML = TL.filter(e=>tlReg==="all"||e[1]===tlReg).map(([y,r,t,d,big])=>
+    `<li class="${big?"big":""}" style="--c:${REG[r]}"><span class="y">${y}</span>
+     <div class="ev"><span class="tag">${r}</span><b>${t}</b>${d?`<small>${d}</small>`:""}</div></li>`).join("");
+}
+$("#tlFilters").addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b){tlReg=b.dataset.r; renderTL();}});
+
+/* ---------- 穴埋め ---------- */
+let clozeOrder = CLOZE.map((_,i)=>i);
+function renderCloze(){
+  const ch = $("#clozeCh").value;
+  $("#clozeList").innerHTML = clozeOrder.map(i=>CLOZE[i]).filter(c=>ch==="all"||c[0]===ch).map(([c,s])=>{
+    const html = esc(s).replace(/\[([^\]]+)\]/g,(_,a)=>`<button class="blank" aria-label="答えを見る">${a}</button>`);
+    return `<li><span class="chlabel">${CH[c]}</span>${html}</li>`;
+  }).join("");
+}
+$("#clozeList").addEventListener("click",e=>{
+  const b=e.target.closest(".blank"); if(!b) return;
+  b.classList.toggle("open"); b.setAttribute("aria-label", b.classList.contains("open")?"答えを隠す":"答えを見る");
+});
+$("#clozeCh").addEventListener("change",renderCloze);
+$("#clozeShow").addEventListener("click",()=>document.querySelectorAll(".blank").forEach(b=>b.classList.add("open")));
+$("#clozeHide").addEventListener("click",()=>document.querySelectorAll(".blank").forEach(b=>b.classList.remove("open")));
+$("#clozeShuffle").addEventListener("click",()=>{clozeOrder=shuffle(clozeOrder); renderCloze();});
+
+/* ---------- 一問一答 ---------- */
+let known = new Set(store.get("seibutsu-known",[]));
+let deck = [], pos = 0, revealed = false;
+function pool(){
+  const ch=$("#qaCh").value, mode=$("#qaMode").value;
+  return QA.map((q,i)=>i).filter(i=>(ch==="all"||QA[i][0]===ch)&&(mode==="all"||!known.has(i)));
+}
+function newDeck(){deck=shuffle(pool()); pos=0; revealed=false; renderQA();}
+function renderQA(){
+  const ch=$("#qaCh").value;
+  const total = QA.filter(q=>ch==="all"||q[0]===ch).length;
+  const done = QA.filter((q,i)=>(ch==="all"||q[0]===ch)&&known.has(i)).length;
+  $("#qaBar").style.width = total? (done/total*100)+"%" : "0";
+  $("#qaStat").textContent = `覚えた問題 ${done} / ${total}`;
+  const box=$("#qaBox");
+  if(pos>=deck.length){
+    box.innerHTML = `<div class="card"><div class="empty">${deck.length? "このセットは終わりです。":"この範囲はすべて覚えました。"}<br><br>
+      <button class="btn main" id="qaAgain">${deck.length?"もう一周する":"すべての問題で復習する"}</button></div></div>`;
+    $("#qaAgain").onclick=()=>{ if(!deck.length) $("#qaMode").value="all"; newDeck(); };
+    return;
+  }
+  const i=deck[pos], [c,q,a,note]=QA[i];
+  box.innerHTML = `<div class="card">
+    <div class="meta"><span>${CH[c]}</span><span>${pos+1} / ${deck.length}</span></div>
+    <div class="qq">${esc(q)}</div>
+    <div class="ans" aria-live="polite">${revealed? esc(a)+(note?`<small>${esc(note)}</small>`:""):""}</div>
+    <div class="row">${revealed
+      ? `<button class="btn" id="qaNo">もう一回</button><button class="btn main" id="qaYes">覚えた</button>`
+      : `<button class="btn main" id="qaShow">答えを見る</button>`}</div></div>`;
+  if(revealed){
+    $("#qaYes").onclick=()=>{known.add(i); store.set("seibutsu-known",[...known]); pos++; revealed=false; renderQA();};
+    $("#qaNo").onclick=()=>{deck.push(i); pos++; revealed=false; renderQA();};
+  } else $("#qaShow").onclick=()=>{revealed=true; renderQA();};
+}
+$("#qaCh").addEventListener("change",newDeck);
+$("#qaMode").addEventListener("change",newDeck);
+$("#qaReset").addEventListener("click",()=>{ if(confirm("「覚えた」の記録をすべて消しますか？")){known=new Set(); store.set("seibutsu-known",[]); newDeck();} });
+
+/* ---------- 初期化 ---------- */
+chOptions($("#clozeCh")); chOptions($("#qaCh"));
+renderTL(); renderCloze(); newDeck();
+if(store.get("seibutsu-sheet",false)) setSheet(true);
+route();
+</script>
+</body>
+</html>
