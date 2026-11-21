@@ -40,8 +40,10 @@ button{font:inherit;color:inherit}
 /* header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--sheet);border-bottom:1px solid var(--rule)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sheet)}
-.bar{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:8px 16px}
-.brand{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:1.05rem;margin-right:auto;white-space:nowrap}
+.bar{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:6px 16px}
+.brand{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:.98rem;line-height:1.25;margin-right:auto;min-width:0}
+.brand small{display:block;font-family:inherit;font-weight:700;font-size:.68rem;color:var(--sub);letter-spacing:.02em}
+.sheetrow{max-width:880px;margin:0 auto;display:flex;justify-content:flex-end;padding:12px 16px 0}
 nav.tabs{max-width:880px;margin:0 auto;display:flex;gap:4px;padding:0 12px;overflow-x:auto}
 nav.tabs a{flex:1 0 auto;text-align:center;padding:10px 14px;text-decoration:none;color:var(--sub);font-weight:700;border-bottom:3px solid transparent}
 nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--red)}
@@ -141,8 +143,7 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:24px 16px 40px
 <body>
 <header class="top">
   <div class="bar">
-    <span class="brand">【1年2学期期末テスト範囲】生物基礎まとめ</span>
-    <button class="iconbtn sheetbtn" id="sheetBtn" aria-pressed="false" title="重要語句を赤シートで隠す">赤シート</button>
+    <span class="brand"><small>【1年2学期期末テスト範囲】</small>生物基礎まとめ</span>
   </div>
   <nav class="tabs" aria-label="ページ切り替え">
     <a href="#summary">まとめ</a>
@@ -153,6 +154,7 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:24px 16px 40px
 </header>
 
 <main>
+  <div class="sheetrow"><button class="iconbtn sheetbtn" id="sheetBtn" aria-pressed="false" title="重要語句を赤シートで隠す">赤シート</button></div>
   <!-- ===== まとめ ===== -->
   <div class="view" id="v-summary">
     <div class="hero">
